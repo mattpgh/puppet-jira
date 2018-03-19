@@ -93,6 +93,8 @@ class jira (
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $download_url          = 'https://downloads.atlassian.com/software/jira/downloads/',
   $checksum                                                         = undef,
   $disable_notifications                                            = false,
+  $remote_ip_valve_enabled                                          = false,
+  $remote_ip_valve_address                                          = undef,
   # Choose whether to use puppet-staging, or puppet-archive
   $deploy_module                                                    = 'archive',
   $proxy_server                                                     = undef,
@@ -224,6 +226,10 @@ class jira (
   }
 
   $merged_jira_config_properties = merge({'jira.websudo.is.disabled' => !$enable_secure_admin_sessions}, $jira_config_properties)
+
+  if($remote_ip_valve_enabled and $remote_ip_valve_address == undef){
+    fail('You need to specify a value for remote_ip_valve_address')
+  }
 
   if $javahome == undef {
     fail('You need to specify a value for javahome')

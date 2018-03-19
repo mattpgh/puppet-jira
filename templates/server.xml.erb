@@ -122,6 +122,14 @@
                 </Context>
 
             </Host>
+            <%   if @remote_ip_valve_enabled -%>
+
+            <Valve className="org.apache.catalina.valves.RemoteIpValve"
+            internalProxies="<%= @remote_ip_valve_address %>"
+            remoteIpHeader="x-forwarded-for"
+            remoteIpProxiesHeader="x-forwarded-by"
+            protocolHeader="x-forwarded-proto" />
+            <%     end -%>
 
             <Valve className="org.apache.catalina.valves.AccessLogValve" resolveHosts="false"
                    pattern="<%= @tomcat_accesslog_format %>"/>
