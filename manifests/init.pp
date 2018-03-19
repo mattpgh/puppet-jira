@@ -230,6 +230,9 @@ class jira (
   if($remote_ip_valve_enabled and $remote_ip_valve_address == undef){
     fail('You need to specify a value for remote_ip_valve_address')
   }
+  if($remote_ip_valve_enabled){
+    $tomcat_accesslog_format = "%{x-forwarded-for}i $tomcat_accesslog_format"
+  }
 
   if $javahome == undef {
     fail('You need to specify a value for javahome')
